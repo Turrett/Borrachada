@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "96719957610",
+    "project_id": "borrachada-tickets",
+    "storage_bucket": "borrachada-tickets.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:96719957610:android:5b287201b6bba252252413",
+        "android_client_info": {
+          "package_name": "com.example.borrachada"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "96719957610-l8vq5p0brbkvv7b3e8u676srl4cslutj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBuG06BgPzheqg6KcKIz9RGDtp-zOkpNxI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "96719957610-l8vq5p0brbkvv7b3e8u676srl4cslutj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
