@@ -1,3 +1,4 @@
 {
-    "cmake.sourceDirectory": "C:/dev/Borrachada/borrachada/windows/flutter"
+    "cmake.sourceDirectory": "C:/dev/Borrachada/borrachada/windows/flutter",
+    "java.configuration.updateBuildConfiguration": "interactive"
 }

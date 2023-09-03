@@ -1,10 +1,12 @@
 import 'package:borrachada/add_code_page.dart';
 import 'package:borrachada/read_code_page.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 
-
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -37,43 +39,43 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      bottomNavigationBar: NavigationBar(
-        onDestinationSelected: (int index) {
-          setState(() {
-            currentPageIndex = index;
-          });
-        },
-        selectedIndex: currentPageIndex,
-        destinations: const <Widget>[
-          NavigationDestination(
-            selectedIcon: Icon(Icons.home),
-            icon: Icon(Icons.home_outlined),
-            label: 'Home',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.add),
-            label: 'Genera',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.query_stats),
-            label: 'Statistiche',
-          ),],),
-      body: <Widget>[
-        Container(
-           child: readCodePage(),
+        appBar: AppBar(
+          title: Text(widget.title),
         ),
-        Container(
-         child: addCodePage(),
+        bottomNavigationBar: NavigationBar(
+          onDestinationSelected: (int index) {
+            setState(() {
+              currentPageIndex = index;
+            });
+          },
+          selectedIndex: currentPageIndex,
+          destinations: const <Widget>[
+            NavigationDestination(
+              selectedIcon: Icon(Icons.home),
+              icon: Icon(Icons.home_outlined),
+              label: 'Home',
+            ),
+            NavigationDestination(
+              icon: Icon(Icons.add),
+              label: 'Genera',
+            ),
+            NavigationDestination(
+              icon: Icon(Icons.query_stats),
+              label: 'Statistiche',
+            ),
+          ],
         ),
-        Container(
-          child: Column(children: [Text('stats')]),
-        )
-      ][currentPageIndex]
-    );
+        body: <Widget>[
+          Container(
+            child: readCodePage(),
+          ),
+          Container(
+            child: addCodePage(),
+          ),
+          Container(
+            child: Column(children: [Text('stats')]),
+          )
+        ][currentPageIndex]);
   }
 }

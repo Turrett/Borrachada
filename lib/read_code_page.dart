@@ -1,4 +1,3 @@
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
