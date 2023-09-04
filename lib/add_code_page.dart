@@ -1,3 +1,4 @@
+import 'package:borrachada/BarcodeManager.dart';
 import 'package:flutter/material.dart';
 
 const List<String> list = <String>['01', '02', '03', '04'];
@@ -37,7 +38,7 @@ class addCodePageState extends State<addCodePage> {
         Text('quanti codici vuoi generare?'),
         TextField(keyboardType: TextInputType.number,maxLength: 4,),
         ElevatedButton(
-          onPressed: () => {},
+          onPressed: () => {BarcodeManager().generateAndUploadBarcode('123456789')},
           child: Text('Genera codici a barre'),
         )
 
