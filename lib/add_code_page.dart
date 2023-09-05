@@ -38,7 +38,7 @@ class addCodePageState extends State<addCodePage> {
         Text('quanti codici vuoi generare?'),
         TextField(keyboardType: TextInputType.number,maxLength: 4,),
         ElevatedButton(
-          onPressed: () => {BarcodeManager().generateAndUploadBarcode('123456789')},
+          onPressed: () => {BarcodeManager().uploadMultipleCodes(1, '00')},
           child: Text('Genera codici a barre'),
         )
 
