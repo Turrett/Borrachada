@@ -29,6 +29,13 @@
             {
               "client_id": "96719957610-l8vq5p0brbkvv7b3e8u676srl4cslutj.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "96719957610-ddfb3f6bdnqjiadnlhfub7lbhslp0ds6.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.borrachada"
+              }
             }
           ]
         }

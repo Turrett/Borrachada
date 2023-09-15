@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'dart:math';
 import 'package:barcode_image/barcode_image.dart';
-import 'package:firebase_database/firebase_database.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
@@ -10,8 +10,8 @@ import 'dart:typed_data';
 import 'package:barcode/barcode.dart';
 
 class BarcodeManager {
-  DatabaseReference db = FirebaseDatabase.instance.ref("Halloween");
-  FirebaseStorage storage = FirebaseStorage.instance;
+  final firestore = FirebaseFirestore.instance;
+  final storage = FirebaseStorage.instance;
   String progetto = 'Halloween';
 
   BarcodeManager() {}
@@ -35,7 +35,7 @@ class BarcodeManager {
     final Uint8List barcodeBytes = Uint8List.fromList(svg.codeUnits);
 
     uploadToFirestore(barcodeBytes, data);
-    uploadToFirebase(data)
+    uploadToFirebase(data);
 
     // Write the bytes to a file
   }
@@ -52,11 +52,12 @@ class BarcodeManager {
     await uploadTask.whenComplete(() => debugPrint('fatto $filename'));
   }
 
-  uploadToFirebase(String codice) {
-    db.set({
-      "codice":codice,
-      "utilizzato":false,
-      "data":DateTime.now().toString(),
-    });
+  Future<void> uploadToFirebase(String codice) {
+    return firestore.collection('Halloween').add({
+      "codice": codice,
+      "utilizzato": false,
+      "data": DateTime.now().toString(),
+    }).then((value) => print('aggiunto $codice a DB'))
+          .catchError((error) => print("Failed to add codice: $error"));
   }
 }
