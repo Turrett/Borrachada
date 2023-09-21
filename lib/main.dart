@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
         brightness: Brightness.light
         
       ),
-      home: const MyHomePage(title: 'Borrachada tickets'),
+      home: const MyHomePage(title: 'Borrachada Tickets 🎟'),
     );
   }
 }

@@ -10,9 +10,9 @@ import 'dart:typed_data';
 import 'package:barcode/barcode.dart';
 
 class BarcodeManager {
+  String progetto = 'Halloween';
   final db = FirebaseFirestore.instance.collection('Halloween');
   final storage = FirebaseStorage.instance;
-  String progetto = 'Halloween';
 
   BarcodeManager() {}
 
@@ -89,9 +89,19 @@ class BarcodeManager {
             .whenComplete(() => ret += "e disattivato");
       }
     } else {
-      ret = "❌ non ci sono codici compatibili";
+      ret = "❌ il codice non esiste o è già stato validato";
     }
     print(ret);
     return ret;
+  }
+
+  Future<String> countSold() async {
+    var query = await db.where('utilizzato', isEqualTo: false).get();
+    return query.docs.length.toString();
+  }
+
+  Future<String> countCreati() async {
+    var query = await db.get();
+    return query.docs.length.toString();
   }
 }

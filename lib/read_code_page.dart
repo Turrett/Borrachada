@@ -22,33 +22,38 @@ class readCodePageState extends State<readCodePage> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          Container(
-            //verifica manuale
-            width: 150,
-            height: 40,
-            child: ElevatedButton(
-              //scannerizza
-              onPressed: () async {
-                var res = await Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const SimpleBarcodeScannerPage(),
-                    ));
-                setState(() {
-                  if (res is String) {
-                    manualControl.text = res;
-                  }
-                });
-              },
-              child: const Text('Scannerizza'),
-            ),
-          ),
-          Divider(),
-          SizedBox(
-            //campo manuale
-            width: 150,
-            height: 40,
-            child: TextField(controller: manualControl),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Container(
+                //verifica manuale
+                width: 150,
+                height: 40,
+                child: ElevatedButton(
+                  //scannerizza
+                  onPressed: () async {
+                    var res = await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              const SimpleBarcodeScannerPage(),
+                        ));
+                    setState(() {
+                      if (res is String) {
+                        manualControl.text = res;
+                      }
+                    });
+                  },
+                  child: const Text('Scannerizza'),
+                ),
+              ),
+              SizedBox(
+                //campo manuale
+                width: 150,
+                height: 40,
+                child: TextField(controller: manualControl),
+              ),
+            ],
           ),
           Divider(),
           Container(

@@ -30,8 +30,14 @@ class addCodePageState extends State<addCodePage> {
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
+        Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,children: [Text('quanti codici vuoi generare?',style: TextStyle(fontFamily: 'Montserrat'),),
+        SizedBox(width: 100,height: 50,child:TextField(
+          keyboardType: TextInputType.number,
+          controller: _controller,
+          maxLength: 4,
+        ) ,),],),
         /*DropdownButton<String>(
           items: list.map<DropdownMenuItem<String>>((String value) {
             return DropdownMenuItem<String>(
@@ -41,13 +47,6 @@ class addCodePageState extends State<addCodePage> {
           }).toList(),
           onChanged: (value) => selectedItem = value!,
         ),*/
-        SizedBox(height: 200,width:300,child:Text('quanti codici vuoi generare?'),),
-        
-        TextField(
-          keyboardType: TextInputType.number,
-          controller: _controller,
-          maxLength: 4,
-        ),
         ElevatedButton(
           onPressed: () => {BarcodeManager().uploadMultipleCodes(int.parse(_controller.text), '00')},
           child: Text('Genera codici a barre'),
