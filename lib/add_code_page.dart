@@ -10,11 +10,17 @@ class addCodePage extends StatefulWidget {
 
 class addCodePageState extends State<addCodePage> {
   String selectedItem = '00';
+  late TextEditingController _controller;
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController(text: "1");
+  }
 
-  addCodePageState() {
-    //  for (var numero in numeri) {
-    //   persone.add(new DropdownMenuItem(child: Text(numero)));
-    // }
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   String generateRandomCode(String mantissa) {
@@ -26,7 +32,7 @@ class addCodePageState extends State<addCodePage> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        DropdownButton<String>(
+        /*DropdownButton<String>(
           items: list.map<DropdownMenuItem<String>>((String value) {
             return DropdownMenuItem<String>(
               child: Text(value),
@@ -34,14 +40,18 @@ class addCodePageState extends State<addCodePage> {
             );
           }).toList(),
           onChanged: (value) => selectedItem = value!,
+        ),*/
+        SizedBox(height: 200,width:300,child:Text('quanti codici vuoi generare?'),),
+        
+        TextField(
+          keyboardType: TextInputType.number,
+          controller: _controller,
+          maxLength: 4,
         ),
-        Text('quanti codici vuoi generare?'),
-        TextField(keyboardType: TextInputType.number,maxLength: 4,),
         ElevatedButton(
-          onPressed: () => {BarcodeManager().uploadMultipleCodes(1, '00')},
+          onPressed: () => {BarcodeManager().uploadMultipleCodes(int.parse(_controller.text), '00')},
           child: Text('Genera codici a barre'),
         )
-
       ],
     );
   }

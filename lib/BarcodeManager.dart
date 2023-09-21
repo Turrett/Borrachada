@@ -10,7 +10,7 @@ import 'dart:typed_data';
 import 'package:barcode/barcode.dart';
 
 class BarcodeManager {
-  final firestore = FirebaseFirestore.instance;
+  final db = FirebaseFirestore.instance.collection('Halloween');
   final storage = FirebaseStorage.instance;
   String progetto = 'Halloween';
 
@@ -18,20 +18,24 @@ class BarcodeManager {
 
   void uploadMultipleCodes(int quanti, String mantissa) {
     for (int i = 0; i < quanti; i++) {
-      generateAndUploadBarcode(randomNumberGen().toString());
+      generateAndUploadBarcode(randomNumberGen());
     }
   }
 
-  int randomNumberGen() {
-    int min = 0;
-    int max = 99999999;
-    final random = Random();
-    return min + random.nextInt(max - min + 1);
+  String randomNumberGen() {
+    var number = "";
+    var randomnumber = Random();
+    //chnage i < 15 on your digits need
+    for (var i = 0; i < 15; i++) {
+      number = number + randomnumber.nextInt(9).toString();
+    }
+    print(number);
+    return number;
   }
 
   Future<void> generateAndUploadBarcode(String data) async {
     // Generate the barcode as a Uint8List
-    final svg = Barcode.fromType(BarcodeType.Code128).toSvg(data);
+    final svg = Barcode.fromType(BarcodeType.QrCode).toSvg(data);
     final Uint8List barcodeBytes = Uint8List.fromList(svg.codeUnits);
 
     uploadToFirestore(barcodeBytes, data);
@@ -53,11 +57,41 @@ class BarcodeManager {
   }
 
   Future<void> uploadToFirebase(String codice) {
-    return firestore.collection('Halloween').add({
-      "codice": codice,
-      "utilizzato": false,
-      "data": DateTime.now().toString(),
-    }).then((value) => print('aggiunto $codice a DB'))
-          .catchError((error) => print("Failed to add codice: $error"));
+    return db
+        .add({
+          "codice": codice,
+          "utilizzato": false,
+          "data": DateTime.now().toString(),
+        })
+        .then((value) => print('aggiunto $codice a DB'))
+        .catchError((error) => print("Failed to add codice: $error"));
+  }
+
+  Future<String> verifyCode(String codice) async {
+    //recupero i documenti con un determinato codice
+    var ret;
+    QuerySnapshot query = await db
+        .where("codice", isEqualTo: codice)
+        .where('utilizzato', isEqualTo: false)
+        .get()
+        .whenComplete(() => ret = "sono stati trovati documenti");
+
+    //verifico che sia uno solo
+    if (query.docs.length == 1) {
+      for (var doc in query.docs) {
+        //verifico che non sia stato utilizzato
+        print("codice valido");
+        ret = "✔ codice valido";
+        db
+            .doc(doc.id)
+            .update({'utilizzato': true})
+            .onError((error, stackTrace) => ret += "ma non disattivato")
+            .whenComplete(() => ret += "e disattivato");
+      }
+    } else {
+      ret = "❌ non ci sono codici compatibili";
+    }
+    print(ret);
+    return ret;
   }
 }

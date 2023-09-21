@@ -20,6 +20,8 @@ class MyApp extends StatelessWidget {
       title: 'Borrachada Tickets',
       theme: ThemeData(
         primarySwatch: Colors.deepPurple,
+        brightness: Brightness.light
+        
       ),
       home: const MyHomePage(title: 'Borrachada tickets'),
     );
