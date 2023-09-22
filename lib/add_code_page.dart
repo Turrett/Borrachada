@@ -10,6 +10,8 @@ class addCodePage extends StatefulWidget {
 
 class addCodePageState extends State<addCodePage> {
   String selectedItem = '00';
+  String buttonText = 'Genera Codici a barre';
+  bool isExecuting = false;
   late TextEditingController _controller;
   @override
   void initState() {
@@ -23,8 +25,38 @@ class addCodePageState extends State<addCodePage> {
     super.dispose();
   }
 
-  String generateRandomCode(String mantissa) {
-    return '';
+  Future<void> eseguiFunzioneAsincrona() async {
+    setState(() {
+      isExecuting = true;
+      buttonText = 'In esecuzione...';
+    });
+
+    // Esegui la tua funzione asincrona qui
+    await BarcodeManager()
+        .uploadMultipleCodes(int.parse(_controller.text), '00');
+
+    setState(() {
+      isExecuting = false;
+      buttonText = 'Genera Codici a barre';
+    });
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Operazione completata'),
+          content: Text(
+              'Codici generati con successo, li puoi trovare su Firebase storage'),
+          actions: [
+            TextButton(
+              child: Text('Chiudi'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -32,12 +64,23 @@ class addCodePageState extends State<addCodePage> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,children: [Text('quanti codici vuoi generare?',style: TextStyle(fontFamily: 'Montserrat'),),
-        SizedBox(width: 100,height: 50,child:TextField(
-          keyboardType: TextInputType.number,
-          controller: _controller,
-          maxLength: 4,
-        ) ,),],),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Text(
+              'quanti codici vuoi generare?',
+            ),
+            SizedBox(
+              width: 100,
+              height: 50,
+              child: TextField(
+                keyboardType: TextInputType.number,
+                controller: _controller,
+                maxLength: 4,
+              ),
+            ),
+          ],
+        ),
         /*DropdownButton<String>(
           items: list.map<DropdownMenuItem<String>>((String value) {
             return DropdownMenuItem<String>(
@@ -48,8 +91,8 @@ class addCodePageState extends State<addCodePage> {
           onChanged: (value) => selectedItem = value!,
         ),*/
         ElevatedButton(
-          onPressed: () => {BarcodeManager().uploadMultipleCodes(int.parse(_controller.text), '00')},
-          child: Text('Genera codici a barre'),
+          onPressed: () => {isExecuting ? null : eseguiFunzioneAsincrona()},
+          child: Text(buttonText),
         )
       ],
     );

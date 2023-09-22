@@ -16,7 +16,7 @@ class BarcodeManager {
 
   BarcodeManager() {}
 
-  void uploadMultipleCodes(int quanti, String mantissa) {
+  Future <void> uploadMultipleCodes(int quanti, String mantissa) async {
     for (int i = 0; i < quanti; i++) {
       generateAndUploadBarcode(randomNumberGen());
     }
@@ -44,7 +44,7 @@ class BarcodeManager {
     // Write the bytes to a file
   }
 
-  uploadToFirestore(Uint8List barcodeBytes, String filename) async {
+  Future <void> uploadToFirestore(Uint8List barcodeBytes, String filename) async {
     final String tempPath = (await getTemporaryDirectory()).path;
     final File file = File('$tempPath/barcode.png');
     await file.writeAsBytes(barcodeBytes);
