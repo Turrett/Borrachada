@@ -35,7 +35,7 @@ class BarcodeManager {
 
   Future<void> generateAndUploadBarcode(String data) async {
     // Generate the barcode as a Uint8List
-    final svg = Barcode.fromType(BarcodeType.QrCode).toSvg(data);
+    final svg = Barcode.fromType(BarcodeType.QrCode).toSvg(data,width: 100,height: 100);
     final Uint8List barcodeBytes = Uint8List.fromList(svg.codeUnits);
 
     uploadToFirestore(barcodeBytes, data);
@@ -96,7 +96,7 @@ class BarcodeManager {
   }
 
   Future<String> countSold() async {
-    var query = await db.where('utilizzato', isEqualTo: false).get();
+    var query = await db.where('utilizzato', isEqualTo:true).get();
     return query.docs.length.toString();
   }
 

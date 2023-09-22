@@ -1,5 +1,6 @@
 import 'package:borrachada/add_code_page.dart';
 import 'package:borrachada/read_code_page.dart';
+import 'package:borrachada/stats.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 
@@ -76,8 +77,7 @@ class _MyHomePageState extends State<MyHomePage> {
             child: addCodePage(),
           ),
           Container(
-            child: Column(children: [Text('stats')]),
-          )
+            child: StatsPage()),
         ][currentPageIndex]);
   }
 }
