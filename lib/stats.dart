@@ -31,7 +31,7 @@ class StatsPageState extends State<StatsPage> {
               if (snapshot.hasError)
                 return Text('Error: ${snapshot.error}');
               else
-                return Text('Numerodi biglietti Creati: ${snapshot.data}', style: TextStyle(fontSize: 20));
+                return Text('Numero di biglietti Creati: ${snapshot.data}', style: TextStyle(fontSize: 20));
             }
           },
         ),
@@ -44,7 +44,7 @@ class StatsPageState extends State<StatsPage> {
               if (snapshot.hasError)
                 return Text('Error: ${snapshot.error}');
               else
-                return Text('Numerodi biglietti Venduti: ${snapshot.data}', style: TextStyle(fontSize: 20));
+                return Text('Numero di biglietti Venduti: ${snapshot.data}', style: TextStyle(fontSize: 20));
             }
           },
         ),
