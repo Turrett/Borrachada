@@ -18,7 +18,7 @@ class BarcodeManager {
 
   Future <void> uploadMultipleCodes(int quanti, String mantissa) async {
     for (int i = 0; i < quanti; i++) {
-      generateAndUploadBarcode(randomNumberGen());
+      await generateAndUploadBarcode(randomNumberGen());
     }
   }
 
@@ -26,7 +26,7 @@ class BarcodeManager {
     var number = "";
     var randomnumber = Random();
     //chnage i < 15 on your digits need
-    for (var i = 0; i < 15; i++) {
+    for (var i = 0; i < 12; i++) {
       number = number + randomnumber.nextInt(9).toString();
     }
     print(number);
@@ -35,11 +35,11 @@ class BarcodeManager {
 
   Future<void> generateAndUploadBarcode(String data) async {
     // Generate the barcode as a Uint8List
-    final svg = Barcode.fromType(BarcodeType.QrCode).toSvg(data,width: 100,height: 100);
-    final Uint8List barcodeBytes = Uint8List.fromList(svg.codeUnits);
+    final svg = new Barcode.fromType(BarcodeType.QrCode).toSvg(data,width: 150,height: 150);
+    final Uint8List barcodeBytes =new Uint8List.fromList(svg.codeUnits);
 
-    uploadToFirestore(barcodeBytes, data);
-    uploadToFirebase(data);
+    await uploadToFirestore(barcodeBytes, data);
+    await uploadToFirebase(data);
 
     // Write the bytes to a file
   }

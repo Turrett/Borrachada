@@ -67,7 +67,7 @@ class _MyHomePageState extends State<MyHomePage> {
               icon: Icon(Icons.query_stats),
               label: 'Statistiche',
             ),
-          ],
+          ], 
         ),
         body: <Widget>[
           Container(
