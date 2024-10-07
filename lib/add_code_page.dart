@@ -11,12 +11,14 @@ class addCodePage extends StatefulWidget {
 class addCodePageState extends State<addCodePage> {
   String selectedItem = '00';
   String buttonText = 'Genera Codici a barre';
+
+  String mailButton = 'Invia';
   bool isExecuting = false;
   late TextEditingController _controller;
   @override
   void initState() {
     super.initState();
-    _controller = TextEditingController(text: "1");
+    _controller = TextEditingController(text: "");
   }
 
   @override
@@ -59,42 +61,95 @@ class addCodePageState extends State<addCodePage> {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Text(
-              'quanti codici vuoi generare?',
-            ),
-            SizedBox(
-              width: 100,
-              height: 50,
-              child: TextField(
-                keyboardType: TextInputType.number,
-                controller: _controller,
-                maxLength: 4,
-              ),
+  Future<void> SendMail() async {
+    setState(() {
+      isExecuting = true;
+      mailButton = 'Eseguo';
+    });
+
+    // Esegui la tua funzione asincrona qui
+    String esito = '';
+    if (_controller.text != '') {
+      esito = await BarcodeManager()
+          .generateSendMailAndUploadBarcode(_controller.text);
+    }
+
+    setState(() {
+      isExecuting = false;
+      mailButton = 'Invia';
+    });
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Operazione completata'),
+          content: Text(esito),
+          actions: [
+            TextButton(
+              child: Text('Chiudi'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
             ),
           ],
+        );
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: SizedBox(
+        height: 150,
+        child: Card(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Text(
+                      'Inserisci la mail dell\' invitat*',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 15),
+                    ),
+                    SizedBox(
+                      width: 230,
+                      height: 50,
+                      child: TextField(
+                        keyboardType: TextInputType.emailAddress,
+                        controller: _controller,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(
+                width: 100,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ElevatedButton(
+                    onPressed: () => {isExecuting ? null : SendMail()},
+                    child: (isExecuting
+                        ? SizedBox(
+                            width: 20,
+                            height: 20,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 3,
+                              color: Colors.white,
+                            ))
+                        : Text(mailButton)),
+                  ),
+                ),
+              )
+            ],
+          ),
         ),
-        /*DropdownButton<String>(
-          items: list.map<DropdownMenuItem<String>>((String value) {
-            return DropdownMenuItem<String>(
-              child: Text(value),
-              value: value,
-            );
-          }).toList(),
-          onChanged: (value) => selectedItem = value!,
-        ),*/
-        ElevatedButton(
-          onPressed: () => {isExecuting ? null : eseguiFunzioneAsincrona()},
-          child: Text(buttonText),
-        )
-      ],
+      ),
     );
   }
 }

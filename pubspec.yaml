@@ -45,6 +45,7 @@ dependencies:
   flutter_svg: ^2.0.7
   firebase_database: ^10.2.5
   cloud_firestore: ^4.9.1
+  mailer: ^6.2.0
 
 
 dev_dependencies:

@@ -1,4 +1,7 @@
 {
     "cmake.sourceDirectory": "C:/dev/Borrachada/borrachada/windows/flutter",
-    "java.configuration.updateBuildConfiguration": "interactive"
+    "java.configuration.updateBuildConfiguration": "interactive",
+    "[codeblock]": {
+        "files.encoding": "windows1252"
+    }
 }
