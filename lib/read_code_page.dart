@@ -10,6 +10,7 @@ class readCodePage extends StatefulWidget {
 class readCodePageState extends State<readCodePage> {
   String cameraReading = '';
   String result = '';
+  String verificaButton = 'Verifica';
 
   TextEditingController manualControl = TextEditingController();
   late TextEditingController output = TextEditingController();
@@ -62,16 +63,35 @@ class readCodePageState extends State<readCodePage> {
             height: 40,
             child: ElevatedButton(
                 onPressed: () async {
+                  setState(() {
+                    verificaButton = 'Verificando ...';
+                  });
                   String res =
                       await BarcodeManager().verifyCode(manualControl.text);
                   setState(() {
                     result = res;
+                    verificaButton = 'Verifica';
                   });
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: Text('Operazione completata'),
+                        content: Text(res),
+                        actions: [
+                          TextButton(
+                            child: Text('Chiudi'),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                        ],
+                      );
+                    },
+                  );
                 },
-                child: Text('Verifica ')),
+                child: Text(verificaButton)),
           ),
-          Divider(),
-          Text(result),
         ],
       ),
     );

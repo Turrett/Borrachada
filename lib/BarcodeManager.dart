@@ -74,7 +74,7 @@ class BarcodeManager {
     ;
 
     await uploadToFirestore(file, data);
-    await uploadToFirebase(data);
+    await uploadToFirebase(data,'');
   }
 
   Future<String> generateSendMailAndUploadBarcode(String ricevente) async {
@@ -94,7 +94,7 @@ class BarcodeManager {
       print('file ' + data + ' caricato Correttamente');
 
       // aggiornamento del db
-      await uploadToFirebase(data);
+      await uploadToFirebase(data,ricevente);
       esito += '\nentry nel DB aggiunta';
       print('Entry nel DB aggiunta');
 
@@ -128,9 +128,10 @@ class BarcodeManager {
     }
   }
 
-  Future<void> uploadToFirebase(String codice) {
+  Future<void> uploadToFirebase(String codice,String? mail) {
     return db
         .add({
+          "mail":mail,
           "codice": codice,
           "utilizzato": false,
           "dataCreazione": DateTime.now().toString(),
